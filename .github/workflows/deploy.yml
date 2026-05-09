@@ -56,7 +56,7 @@ jobs:
             DB_PORT=5432
             DB_NAME=${{ secrets.DB_NAME }}
             DB_USER=${{ secrets.DB_USER }}
-            DB_SSL=false
+            DB_SSL=true
             S3_UPLOAD_BUCKET=${{ secrets.S3_UPLOAD_BUCKET }}
             CORS_ORIGIN=${{ secrets.CORS_ORIGIN }}
           secrets: |

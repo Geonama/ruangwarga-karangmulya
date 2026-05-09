@@ -258,7 +258,7 @@ Sebelum menjalankan command, buka Docker Desktop dulu sampai statusnya running.
    - `DB_PORT` = `5432`
    - `DB_NAME` = `ruangwarga`
    - `DB_USER` = `postgres`
-   - `DB_SSL` = `false`
+   - `DB_SSL` = `true`
    - `S3_UPLOAD_BUCKET` = nama bucket upload
    - `CORS_ORIGIN` = `*`
 10. Secrets:

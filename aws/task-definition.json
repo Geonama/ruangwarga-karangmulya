@@ -4,12 +4,12 @@
   "requiresCompatibilities": ["FARGATE"],
   "cpu": "256",
   "memory": "512",
-  "executionRoleArn": "arn:aws:iam::ACCOUNT_ID:role/ecsTaskExecutionRole",
-  "taskRoleArn": "arn:aws:iam::ACCOUNT_ID:role/ruangwargaTaskRole",
+  "executionRoleArn": "arn:aws:iam::976118139367:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::976118139367:role/ruangwargaTaskRole",
   "containerDefinitions": [
     {
       "name": "ruangwarga-api",
-      "image": "ACCOUNT_ID.dkr.ecr.ap-southeast-1.amazonaws.com/ruangwarga-api:latest",
+      "image": "976118139367.dkr.ecr.ap-southeast-1.amazonaws.com/ruangwarga-api:latest",
       "essential": true,
       "portMappings": [
         {
@@ -21,8 +21,19 @@
       "environment": [
         { "name": "PORT", "value": "3000" },
         { "name": "AWS_REGION", "value": "ap-southeast-1" },
+        { "name": "DB_HOST", "value": "ruangwarga-db.c5yiey0sqepc.ap-southeast-1.rds.amazonaws.com" },
         { "name": "DB_PORT", "value": "5432" },
-        { "name": "DB_SSL", "value": "false" }
+        { "name": "DB_NAME", "value": "ruangwarga" },
+        { "name": "DB_USER", "value": "postgres" },
+        { "name": "DB_SSL", "value": "true" },
+        { "name": "S3_UPLOAD_BUCKET", "value": "ruangwarga-uploads-geo-152022121" },
+        { "name": "CORS_ORIGIN", "value": "*" }
+      ],
+      "secrets": [
+        {
+          "name": "DB_PASSWORD",
+          "valueFrom": "arn:aws:secretsmanager:ap-southeast-1:976118139367:secret:ruangwarga/db/password-TuKxVg"
+        }
       ],
       "logConfiguration": {
         "logDriver": "awslogs",
