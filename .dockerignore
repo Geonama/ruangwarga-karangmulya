@@ -1,0 +1,6 @@
+node_modules
+.git
+.github
+.env
+npm-debug.log
+AWS_STEP_BY_STEP.md

@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RuangWarga Karangmulya</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="#dashboard" data-view-link="dashboard" aria-label="RuangWarga">
+          <img src="assets/brand-mark.svg" alt="" />
+          <span>
+            <strong>RuangWarga</strong>
+            <small>Karangmulya</small>
+          </span>
+        </a>
+
+        <nav class="nav-list" aria-label="Navigasi utama">
+          <button class="nav-item active" type="button" data-view-link="dashboard">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 11.5 12 5l8 6.5v7a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5v-7Z"/><path d="M9 20v-6h6v6"/></svg>
+            </span>
+            Beranda
+          </button>
+          <button class="nav-item" type="button" data-view-link="layanan">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M14 3v5h5"/><path d="M8.5 13h7"/><path d="M8.5 17h5"/></svg>
+            </span>
+            Pengajuan
+          </button>
+          <button class="nav-item" type="button" data-view-link="pengaduan">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M5 7.5A3.5 3.5 0 0 1 8.5 4h7A3.5 3.5 0 0 1 19 7.5v5A3.5 3.5 0 0 1 15.5 16H11l-4 4v-4.4A3.5 3.5 0 0 1 5 12.5v-5Z"/><path d="M8.5 8.5h7"/><path d="M8.5 12h4.5"/></svg>
+            </span>
+            Pengaduan
+          </button>
+          <button class="nav-item" type="button" data-view-link="tracking">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 21s7-5.2 7-11A7 7 0 0 0 5 10c0 5.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.4"/></svg>
+            </span>
+            Lacak
+          </button>
+          <button class="nav-item" type="button" data-view-link="admin">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/><path d="M8 5v14"/><path d="M16 5v14"/></svg>
+            </span>
+            Admin
+          </button>
+        </nav>
+
+        <div class="side-note">
+          <span class="status-dot"></span>
+          <span>Loket digital aktif hari ini</span>
+        </div>
+      </aside>
+
+      <div class="content-shell">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Pelayanan Publik Desa/Kelurahan</p>
+            <h1 id="pageTitle">RuangWarga Karangmulya</h1>
+          </div>
+          <div class="operator-card" aria-label="Status layanan">
+            <span class="operator-label">Petugas</span>
+            <strong>Loket 02</strong>
+          </div>
+        </header>
+
+        <main>
+          <section class="view active" id="dashboard" aria-labelledby="dashboardTitle">
+            <div class="dashboard-grid">
+              <article class="intro-panel">
+                <div class="intro-copy">
+                  <p class="eyebrow">Satu pintu untuk warga</p>
+                  <h2 id="dashboardTitle">Urus surat, sampaikan laporan, dan pantau progres tanpa antre panjang.</h2>
+                  <div class="quick-actions">
+                    <button class="primary-action" type="button" data-view-link="layanan">Ajukan Surat</button>
+                    <button class="secondary-action" type="button" data-view-link="pengaduan">Kirim Pengaduan</button>
+                  </div>
+                </div>
+                <img class="map-art" src="assets/service-map.svg" alt="Peta pelayanan warga Karangmulya" />
+              </article>
+
+              <div class="metrics-grid" aria-label="Ringkasan layanan">
+                <article class="metric-card">
+                  <span class="metric-label">Pengajuan</span>
+                  <strong id="metricLetters">0</strong>
+                  <small>Berkas surat masuk</small>
+                </article>
+                <article class="metric-card">
+                  <span class="metric-label">Pengaduan</span>
+                  <strong id="metricComplaints">0</strong>
+                  <small>Laporan warga</small>
+                </article>
+                <article class="metric-card">
+                  <span class="metric-label">Selesai</span>
+                  <strong id="metricDone">0</strong>
+                  <small>Sudah ditangani</small>
+                </article>
+              </div>
+
+              <article class="panel activity-panel">
+                <div class="panel-heading">
+                  <h2>Aktivitas Terbaru</h2>
+                  <button class="text-button" type="button" data-view-link="admin">Lihat antrean</button>
+                </div>
+                <div class="activity-list" id="activityList"></div>
+              </article>
+
+              <article class="panel schedule-panel">
+                <div class="panel-heading">
+                  <h2>Loket Hari Ini</h2>
+                  <span class="pill">08.00 - 15.00</span>
+                </div>
+                <div class="service-hours">
+                  <div>
+                    <strong>Surat administrasi</strong>
+                    <span>Domisili, usaha, SKTM, keterangan umum</span>
+                  </div>
+                  <div>
+                    <strong>Pengaduan lapangan</strong>
+                    <span>Jalan, lampu, drainase, kebersihan</span>
+                  </div>
+                  <div>
+                    <strong>Verifikasi berkas</strong>
+                    <span>Prioritas untuk data yang lengkap</span>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="view" id="layanan" aria-labelledby="serviceTitle">
+            <div class="section-layout">
+              <article class="form-panel">
+                <div class="panel-heading">
+                  <div>
+                    <p class="eyebrow">Pengajuan surat</p>
+                    <h2 id="serviceTitle">Form Layanan Administrasi</h2>
+                  </div>
+                  <span class="pill">Upload dokumen</span>
+                </div>
+
+                <form id="letterForm" class="smart-form">
+                  <div class="form-grid">
+                    <label>
+                      Nama lengkap
+                      <input name="name" type="text" placeholder="Contoh: Rizky Pratama" required />
+                    </label>
+                    <label>
+                      NIK
+                      <input name="nik" type="text" inputmode="numeric" minlength="12" maxlength="16" placeholder="16 digit" required />
+                    </label>
+                    <label>
+                      Jenis surat
+                      <select name="service" required>
+                        <option value="">Pilih layanan</option>
+                        <option>Surat Keterangan Domisili</option>
+                        <option>Surat Keterangan Usaha</option>
+                        <option>Surat Keterangan Tidak Mampu</option>
+                        <option>Surat Pengantar SKCK</option>
+                      </select>
+                    </label>
+                    <label>
+                      Jadwal ambil
+                      <input name="pickup" type="date" required />
+                    </label>
+                  </div>
+
+                  <label>
+                    Alamat
+                    <textarea name="address" rows="3" placeholder="RT/RW, nama jalan, dan patokan rumah" required></textarea>
+                  </label>
+
+                  <label class="file-drop">
+                    <input name="file" type="file" accept=".pdf,.jpg,.jpeg,.png" required />
+                    <span>
+                      <strong>Unggah KTP/KK atau dokumen pendukung</strong>
+                      <small>PDF, JPG, atau PNG</small>
+                    </span>
+                  </label>
+
+                  <button class="primary-action" type="submit">Kirim Pengajuan</button>
+                </form>
+              </article>
+
+              <aside class="panel requirement-panel">
+                <h2>Syarat Berkas</h2>
+                <ul class="check-list">
+                  <li>KTP pemohon masih berlaku</li>
+                  <li>Kartu Keluarga sesuai domisili</li>
+                  <li>Nomor telepon aktif untuk konfirmasi</li>
+                  <li>Dokumen tambahan sesuai jenis surat</li>
+                </ul>
+              </aside>
+            </div>
+          </section>
+
+          <section class="view" id="pengaduan" aria-labelledby="complaintTitle">
+            <div class="section-layout">
+              <article class="form-panel">
+                <div class="panel-heading">
+                  <div>
+                    <p class="eyebrow">Pengaduan warga</p>
+                    <h2 id="complaintTitle">Laporkan Kondisi Lingkungan</h2>
+                  </div>
+                  <span class="pill">Foto bukti</span>
+                </div>
+
+                <form id="complaintForm" class="smart-form">
+                  <div class="form-grid">
+                    <label>
+                      Nama pelapor
+                      <input name="name" type="text" placeholder="Nama lengkap" required />
+                    </label>
+                    <label>
+                      Kategori
+                      <select name="category" required>
+                        <option value="">Pilih kategori</option>
+                        <option>Jalan rusak</option>
+                        <option>Lampu jalan</option>
+                        <option>Drainase</option>
+                        <option>Kebersihan</option>
+                        <option>Keamanan lingkungan</option>
+                      </select>
+                    </label>
+                  </div>
+
+                  <label>
+                    Lokasi kejadian
+                    <input name="location" type="text" placeholder="Contoh: Jl. Melati RT 03/RW 05" required />
+                  </label>
+
+                  <label>
+                    Uraian laporan
+                    <textarea name="description" rows="4" placeholder="Tulis kondisi yang perlu ditangani" required></textarea>
+                  </label>
+
+                  <label class="file-drop">
+                    <input name="file" type="file" accept=".jpg,.jpeg,.png,.pdf" required />
+                    <span>
+                      <strong>Unggah foto atau dokumen laporan</strong>
+                      <small>JPG, PNG, atau PDF</small>
+                    </span>
+                  </label>
+
+                  <button class="primary-action" type="submit">Kirim Pengaduan</button>
+                </form>
+              </article>
+
+              <aside class="panel response-panel">
+                <h2>Prioritas Penanganan</h2>
+                <div class="priority-stack">
+                  <div><strong>Darurat</strong><span>Gangguan keselamatan warga</span></div>
+                  <div><strong>Segera</strong><span>Fasilitas umum tidak berfungsi</span></div>
+                  <div><strong>Terjadwal</strong><span>Perbaikan rutin dan pemeliharaan</span></div>
+                </div>
+              </aside>
+            </div>
+          </section>
+
+          <section class="view" id="tracking" aria-labelledby="trackingTitle">
+            <article class="panel tracking-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Pantau progres</p>
+                  <h2 id="trackingTitle">Lacak Tiket Layanan</h2>
+                </div>
+                <span class="pill" id="ticketCount">0 tiket</span>
+              </div>
+
+              <form id="trackingForm" class="tracking-form">
+                <input id="trackingInput" type="text" placeholder="Masukkan kode tiket, contoh RW-2026-1042" autocomplete="off" />
+                <button class="primary-action" type="submit">Lacak</button>
+              </form>
+
+              <div class="ticket-cloud" id="ticketCloud" aria-label="Tiket tersimpan"></div>
+              <div id="trackingResult" class="tracking-result"></div>
+            </article>
+          </section>
+
+          <section class="view" id="admin" aria-labelledby="adminTitle">
+            <article class="panel admin-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Area petugas</p>
+                  <h2 id="adminTitle">Antrean Layanan</h2>
+                </div>
+                <select id="adminFilter" class="compact-select" aria-label="Filter antrean">
+                  <option value="all">Semua status</option>
+                  <option value="Diterima">Diterima</option>
+                  <option value="Diverifikasi">Diverifikasi</option>
+                  <option value="Diproses">Diproses</option>
+                  <option value="Selesai">Selesai</option>
+                </select>
+              </div>
+
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Kode</th>
+                      <th>Jenis</th>
+                      <th>Nama</th>
+                      <th>Detail</th>
+                      <th>Berkas</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminTable"></tbody>
+                </table>
+              </div>
+            </article>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

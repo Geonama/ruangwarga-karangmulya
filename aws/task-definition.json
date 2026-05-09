@@ -1,0 +1,38 @@
+{
+  "family": "ruangwarga-api-task",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "executionRoleArn": "arn:aws:iam::ACCOUNT_ID:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::ACCOUNT_ID:role/ruangwargaTaskRole",
+  "containerDefinitions": [
+    {
+      "name": "ruangwarga-api",
+      "image": "ACCOUNT_ID.dkr.ecr.ap-southeast-1.amazonaws.com/ruangwarga-api:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 3000,
+          "hostPort": 3000,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        { "name": "PORT", "value": "3000" },
+        { "name": "AWS_REGION", "value": "ap-southeast-1" },
+        { "name": "DB_PORT", "value": "5432" },
+        { "name": "DB_SSL", "value": "false" }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/ruangwarga-api",
+          "awslogs-region": "ap-southeast-1",
+          "awslogs-stream-prefix": "ecs",
+          "awslogs-create-group": "true"
+        }
+      }
+    }
+  ]
+}
