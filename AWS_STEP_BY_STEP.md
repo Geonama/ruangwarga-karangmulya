@@ -384,44 +384,31 @@ Tes fitur:
 
 ## 13. Aktifkan GitHub Actions CI/CD
 
-### 13.1 Buat IAM user untuk GitHub Actions
+CI/CD project ini sudah dikonfigurasi menggunakan GitHub Actions OIDC, jadi repository tidak perlu menyimpan access key AWS permanen.
 
-1. Buka `IAM > Users > Create user`.
-2. User name: `github-actions-ruangwarga`.
-3. Setelah user dibuat, buka tab permissions.
-4. Create inline policy.
-5. Isi JSON dari [aws/iam-github-actions-policy.json](aws/iam-github-actions-policy.json).
-6. Ganti `ACCOUNT_ID` dengan AWS Account ID kamu.
-7. Buat access key:
-   - Use case: `Command Line Interface`
-   - Simpan Access Key ID dan Secret Access Key.
+### 13.1 IAM OIDC role
 
-### 13.2 Isi GitHub repository secrets
+Role IAM untuk GitHub Actions:
 
-Buka repository GitHub kamu: `Settings > Secrets and variables > Actions > New repository secret`.
+- OIDC provider: `token.actions.githubusercontent.com`
+- Role: `githubActionsRuangWargaRole`
+- Policy: `ruangwargaGitHubActionsDeployPolicy`
 
-Isi secret berikut:
+Trust policy ada di [aws/github-actions-trust-policy.json](aws/github-actions-trust-policy.json). Permission policy ada di [aws/iam-github-actions-policy.json](aws/iam-github-actions-policy.json).
 
-| Secret | Isi |
-| --- | --- |
-| `AWS_ACCESS_KEY_ID` | Access key dari IAM user |
-| `AWS_SECRET_ACCESS_KEY` | Secret access key dari IAM user |
-| `DB_HOST` | Endpoint RDS |
-| `DB_NAME` | `ruangwarga` |
-| `DB_USER` | `postgres` |
-| `DB_PASSWORD_ARN` | ARN secret password RDS |
-| `S3_UPLOAD_BUCKET` | Bucket upload |
-| `STATIC_BUCKET` | Bucket static |
-| `CORS_ORIGIN` | `*` |
-| `API_BASE_URL` | `.` |
-| `CLOUDFRONT_DISTRIBUTION_ID` | ID distribution CloudFront |
+### 13.2 Workflow GitHub Actions
 
-### 13.3 Edit task definition template
+Workflow ada di [.github/workflows/deploy.yml](.github/workflows/deploy.yml). Workflow ini sudah berisi:
 
-Buka file [aws/task-definition.json](aws/task-definition.json), ganti:
+- Build Docker image.
+- Push image ke ECR `ruangwarga-api`.
+- Deploy task definition baru ke ECS service `ruangwarga-service`.
+- Upload static website ke S3 static bucket.
+- Invalidate CloudFront `E1EK9SO28JDAAS`.
 
-- `ACCOUNT_ID` dengan AWS Account ID kamu.
-- Jika region kamu bukan `ap-southeast-1`, ganti semua region.
+Tidak perlu membuat repository secret AWS access key karena workflow memakai OIDC role.
+
+### 13.3 Commit dan push
 
 Commit dan push:
 

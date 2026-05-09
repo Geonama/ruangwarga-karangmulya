@@ -4,6 +4,10 @@ on:
   push:
     branches: ["main"]
 
+permissions:
+  id-token: write
+  contents: read
+
 env:
   AWS_REGION: ap-southeast-1
   ECR_REPOSITORY: ruangwarga-api
@@ -11,6 +15,9 @@ env:
   ECS_SERVICE: ruangwarga-service
   ECS_TASK_DEFINITION: aws/task-definition.json
   CONTAINER_NAME: ruangwarga-api
+  STATIC_BUCKET: ruangwarga-static-geo-152022121-976118139367-ap-southeast-1-an
+  CLOUDFRONT_DISTRIBUTION_ID: E1EK9SO28JDAAS
+  API_BASE_URL: .
 
 jobs:
   deploy:
@@ -24,8 +31,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: arn:aws:iam::976118139367:role/githubActionsRuangWargaRole
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
@@ -49,18 +55,6 @@ jobs:
           task-definition: ${{ env.ECS_TASK_DEFINITION }}
           container-name: ${{ env.CONTAINER_NAME }}
           image: ${{ steps.build-image.outputs.image }}
-          environment-variables: |
-            PORT=3000
-            AWS_REGION=${{ env.AWS_REGION }}
-            DB_HOST=${{ secrets.DB_HOST }}
-            DB_PORT=5432
-            DB_NAME=${{ secrets.DB_NAME }}
-            DB_USER=${{ secrets.DB_USER }}
-            DB_SSL=true
-            S3_UPLOAD_BUCKET=${{ secrets.S3_UPLOAD_BUCKET }}
-            CORS_ORIGIN=${{ secrets.CORS_ORIGIN }}
-          secrets: |
-            DB_PASSWORD=${{ secrets.DB_PASSWORD_ARN }}
 
       - name: Deploy to Amazon ECS
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
@@ -72,11 +66,11 @@ jobs:
 
       - name: Prepare frontend config
         run: |
-          echo 'window.RUANGWARGA_API_BASE = "${{ secrets.API_BASE_URL }}";' > config.js
+          echo 'window.RUANGWARGA_API_BASE = "${{ env.API_BASE_URL }}";' > config.js
 
       - name: Upload static website to S3
         run: |
-          aws s3 sync . s3://${{ secrets.STATIC_BUCKET }} \
+          aws s3 sync . s3://${{ env.STATIC_BUCKET }} \
             --delete \
             --exclude "*" \
             --include "index.html" \
@@ -88,5 +82,5 @@ jobs:
       - name: Invalidate CloudFront cache
         run: |
           aws cloudfront create-invalidation \
-            --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
+            --distribution-id ${{ env.CLOUDFRONT_DISTRIBUTION_ID }} \
             --paths "/*"
